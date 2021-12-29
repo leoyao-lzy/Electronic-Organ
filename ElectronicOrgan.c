@@ -1,39 +1,39 @@
 #include <msp430.h> 
-int flag=0;      //ÓÃÓÚÑ¡Ôñ²¥·ÅÒôÀÖ
-int key=0;       //ÓÃÓÚµ¯×àÊ±Ñ¡ÔñÒô·û
-int convert =0;  //ÓÃÓÚÄ£Ê½ÇÐ»»
-int a;           //a=1Ê±Îª²¥·Å£¬a=2Ê±Îªµ¯×à
-//¡¶Á½Ö»ÀÏ»¢¡·Ïà¹ØÊý×é
-const int TwoTigers_rym[10] = {1,262,294,330,349,392,440,494,523,196};                              //¡¶Á½Ö»ÀÏ»¢¡·Òô·ûÆµÂÊ
-const int TwoTigers1[18] = {1,2,3,1,0,1,2,3,1,3,4,5,5,3,4,5,5,0};                                   //¡¶Á½Ö»ÀÏ»¢¡·µÚÒ»ÐÐÆ××Ó
-const int TwoTigers2[35] = {5,6,5,4,3,3,1,1,5,6,5,4,3,3,1,1,0,1,1,9,9,1,1,1,1,0,1,1,9,9,1,1,1,1,0}; //¡¶Á½Ö»ÀÏ»¢¡·µÚ¶þÐÐÆ××Ó
-//¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·Ïà¹ØÊý×é
-const int LittleStars_rym[10] = {1,262,294,330,349,392,440,494,523,196};                            //¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·Òô·ûÆµÂÊ
+int flag=0;      //ç”¨äºŽé€‰æ‹©æ’­æ”¾éŸ³ä¹
+int key=0;       //ç”¨äºŽå¼¹å¥æ—¶é€‰æ‹©éŸ³ç¬¦
+int convert =0;  //ç”¨äºŽæ¨¡å¼åˆ‡æ¢
+int a;           //a=1æ—¶ä¸ºæ’­æ”¾ï¼Œa=2æ—¶ä¸ºå¼¹å¥
+//ã€Šä¸¤åªè€è™Žã€‹ç›¸å…³æ•°ç»„
+const int TwoTigers_rym[10] = {1,262,294,330,349,392,440,494,523,196};                              //ã€Šä¸¤åªè€è™Žã€‹éŸ³ç¬¦é¢‘çŽ‡
+const int TwoTigers1[18] = {1,2,3,1,0,1,2,3,1,3,4,5,5,3,4,5,5,0};                                   //ã€Šä¸¤åªè€è™Žã€‹ç¬¬ä¸€è¡Œè°±å­
+const int TwoTigers2[35] = {5,6,5,4,3,3,1,1,5,6,5,4,3,3,1,1,0,1,1,9,9,1,1,1,1,0,1,1,9,9,1,1,1,1,0}; //ã€Šä¸¤åªè€è™Žã€‹ç¬¬äºŒè¡Œè°±å­
+//ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹ç›¸å…³æ•°ç»„
+const int LittleStars_rym[10] = {1,262,294,330,349,392,440,494,523,196};                            //ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹éŸ³ç¬¦é¢‘çŽ‡
 const int LittleStars1[44] = {1,0,1,5,0,5,6,0,6,5,0,4,0,4,3,
-                              0,3,2,0,2,1,0,5,0,5,4,0,4,3,0,3,2,0,5,0,5,4,0,4,3,0,3,2,0};//¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·Æ××Ó
-//¡¶ÉÁÁÁµÄÈÕ×Ó¡·Ïà¹ØÊý×é
+                              0,3,2,0,2,1,0,5,0,5,4,0,4,3,0,3,2,0,5,0,5,4,0,4,3,0,3,2,0};//ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹è°±å­
+//ã€Šé—ªäº®çš„æ—¥å­ã€‹ç›¸å…³æ•°ç»„
 const int ShiningDays_rym[9] = {1,262,294,330,165,196,220,247,440};
-const int ShiningDays1[24] = {3,3,3,6,1,3,2,2,2,5,7,2,1,1,1,6,7,1,7,7,7,7,6,6};  //¡¶ÉÁÁÁµÄÈÕ×Ó¡·Æ××ÓµÚÒ»ÐÐ
-const int ShiningDays2[24] = {3,3,3,6,1,3,2,2,2,5,7,2,1,1,1,6,7,1,7,7,7,7,4,4};  //¡¶ÉÁÁÁµÄÈÕ×Ó¡·Æ××ÓµÚ¶þÐÐ
-const int ShiningDays3[24] = {3,3,3,2,1,2,3,3,3,3,8,8,3,3,3,2,1,2,3,3,3,3,0,1};  //¡¶ÉÁÁÁµÄÈÕ×Ó¡·µÚÈýÐÐÆ××Ó
-const int ShiningDays4[24] = {2,2,2,2,2,3,6,6,6,6,0,6,1,1,1,1,1,2,7,7,7,7,4,4};  //¡¶ÉÁÁÁµÄÈÕ×Ó¡·µÚËÄÐÐÆ××Ó
-const int ShiningDays5[24] = {3,3,3,2,1,2,3,3,3,3,0,8,3,3,3,2,1,2,3,3,3,3,0,1};  //¡¶ÉÁÁÁµÄÈÕ×Ó¡·µÚÎåÐÐÆ××Ó
-const int ShiningDays6[24] = {2,2,2,2,2,3,6,6,6,6,0,5,6,6,6,1,7,6,0,6,6,6,6,0};  //¡¶ÉÁÁÁµÄÈÕ×Ó¡·µÚÁùÐÐÆ××Ó
-//º¯Êý¶¨Òå²¿·Ö
+const int ShiningDays1[24] = {3,3,3,6,1,3,2,2,2,5,7,2,1,1,1,6,7,1,7,7,7,7,6,6};  //ã€Šé—ªäº®çš„æ—¥å­ã€‹è°±å­ç¬¬ä¸€è¡Œ
+const int ShiningDays2[24] = {3,3,3,6,1,3,2,2,2,5,7,2,1,1,1,6,7,1,7,7,7,7,4,4};  //ã€Šé—ªäº®çš„æ—¥å­ã€‹è°±å­ç¬¬äºŒè¡Œ
+const int ShiningDays3[24] = {3,3,3,2,1,2,3,3,3,3,8,8,3,3,3,2,1,2,3,3,3,3,0,1};  //ã€Šé—ªäº®çš„æ—¥å­ã€‹ç¬¬ä¸‰è¡Œè°±å­
+const int ShiningDays4[24] = {2,2,2,2,2,3,6,6,6,6,0,6,1,1,1,1,1,2,7,7,7,7,4,4};  //ã€Šé—ªäº®çš„æ—¥å­ã€‹ç¬¬å››è¡Œè°±å­
+const int ShiningDays5[24] = {3,3,3,2,1,2,3,3,3,3,0,8,3,3,3,2,1,2,3,3,3,3,0,1};  //ã€Šé—ªäº®çš„æ—¥å­ã€‹ç¬¬äº”è¡Œè°±å­
+const int ShiningDays6[24] = {2,2,2,2,2,3,6,6,6,6,0,5,6,6,6,1,7,6,0,6,6,6,6,0};  //ã€Šé—ªäº®çš„æ—¥å­ã€‹ç¬¬å…­è¡Œè°±å­
+//å‡½æ•°å®šä¹‰éƒ¨åˆ†
 void delay(unsigned int i);
 void TwoTigers_play();
 void LittleStars_play();
 void ShiningDays_play();
-void TwoTigers_show();    //L4ÁÁÒ»´Î
-void LittleStars_show();  //L4ÁÁÁ½´Î
-void ShiningDays_show();  //L4ÁÁÈý´Î
-//À¶ÑÀÍ¨ÐÅ²¿·Ö
+void TwoTigers_show();    //L4äº®ä¸€æ¬¡
+void LittleStars_show();  //L4äº®ä¸¤æ¬¡
+void ShiningDays_show();  //L4äº®ä¸‰æ¬¡
+//è“ç‰™é€šä¿¡éƒ¨åˆ†
 void UARTA0_init( );
-void TxtOut(char string[]);     //Êä³ö×Ö·û´®º¯Êý
-void TxtIn(char string[], int num); //Êä³ö×Ö·û´®º¯Êý
-int  CodeCheck(char buffer[],char Code[],int num);  //¼ì²éÊäÈëÃÜÂëÊÇ·ñÕýÈ·º¯Êý
+void TxtOut(char string[]);     //è¾“å‡ºå­—ç¬¦ä¸²å‡½æ•°
+void TxtIn(char string[], int num); //è¾“å‡ºå­—ç¬¦ä¸²å‡½æ•°
+int  CodeCheck(char buffer[],char Code[],int num);  //æ£€æŸ¥è¾“å…¥å¯†ç æ˜¯å¦æ­£ç¡®å‡½æ•°
 char buffer[11]="12345678\r\n\0";
-char code[] = "12345678";     //½øÈëµç×ÓÇÙÃÜÂë
+char code[] = "12345678";     //è¿›å…¥ç”µå­ç´å¯†ç 
 char welcome[]="Please input password>>>\r\n\0";
 char sorry[]="Sorry!\r\n\0";
 char retry[]="Please try again!\r\n\0";
@@ -51,15 +51,15 @@ unsigned char j;
 int main(void)
 {
     WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
-    //ÉèÖÃ¶¨Ê±Æ÷TA1
-    P2SEL |=BIT1;              //ÖÃP2.1Îª¶¨Ê±Æ÷TA1µÄPWMÊä³öÒý½Å
+    //è®¾ç½®å®šæ—¶å™¨TA1
+    P2SEL |=BIT1;              //ç½®P2.1ä¸ºå®šæ—¶å™¨TA1çš„PWMè¾“å‡ºå¼•è„š
     P2SEL2 &=~BIT1;
-    P2DIR |=BIT1;              //ÖÃP2.1Îª±È½ÏÆ÷1µÄPWMÊä³öÒý½Å
-    TA1CTL |=TASSEL0;          //Ñ¡ÔñACLKÎªTA1¼ÆÊýÊ±ÖÓ£¬ACLKÊ¹ÓÃÉÏµç¸´Î»ÉèÖÃ£¬¼´Íâ²¿¾§Õñ32768Hz
-    TA1CCTL1|=OUTMOD1;         //ÖÃTA1±È½ÏÆ÷1µÄPWMÊä³öÎªÄ£Ê½2£º ¼ÆÊýµ½CCR1Öµ·­×ª£¬µ½CCR0ÖµÖÃ0
-    TA1CTL |=TACLR+MC0;        //ÖÃÔö¼ÆÊý·½Ê½£¬Ê¹¼ÆÊýÆ÷´Ó0¿ªÊ¼¼ÆÊý£¬¼ÆÊýµ½TA1CCR0ºóÓÖ´Ó0¼ÆÊý
-    //ÖÐ¶ÏÏà¹ØÉèÖÃ
-    P1SEL &= ~(BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);//P1.0~P1.7(³ýP1.1ºÍP1.2Íâ£©·Ö±ðºÍK1~K8ÏàÁ¬£¨³ýK2,K3Íâ£©
+    P2DIR |=BIT1;              //ç½®P2.1ä¸ºæ¯”è¾ƒå™¨1çš„PWMè¾“å‡ºå¼•è„š
+    TA1CTL |=TASSEL0;          //é€‰æ‹©ACLKä¸ºTA1è®¡æ•°æ—¶é’Ÿï¼ŒACLKä½¿ç”¨ä¸Šç”µå¤ä½è®¾ç½®ï¼Œå³å¤–éƒ¨æ™¶æŒ¯32768Hz
+    TA1CCTL1|=OUTMOD1;         //ç½®TA1æ¯”è¾ƒå™¨1çš„PWMè¾“å‡ºä¸ºæ¨¡å¼2ï¼š è®¡æ•°åˆ°CCR1å€¼ç¿»è½¬ï¼Œåˆ°CCR0å€¼ç½®0
+    TA1CTL |=TACLR+MC0;        //ç½®å¢žè®¡æ•°æ–¹å¼ï¼Œä½¿è®¡æ•°å™¨ä»Ž0å¼€å§‹è®¡æ•°ï¼Œè®¡æ•°åˆ°TA1CCR0åŽåˆä»Ž0è®¡æ•°
+    //ä¸­æ–­ç›¸å…³è®¾ç½®
+    P1SEL &= ~(BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);//P1.0~P1.7(é™¤P1.1å’ŒP1.2å¤–ï¼‰åˆ†åˆ«å’ŒK1~K8ç›¸è¿žï¼ˆé™¤K2,K3å¤–ï¼‰
     P1SEL2 &= ~(BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);
     P1OUT |= (BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);
     P1REN |= (BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);
@@ -67,7 +67,7 @@ int main(void)
     P1IES |= (BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);
     P1IFG &= ~(BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);
     P1IE |= (BIT0+BIT3+BIT4+BIT5+BIT6+BIT7+BIT8);
-    P2SEL &=~(BIT0+BIT2+BIT4+BIT5);//P2.0ºÍÍâ²¿°´¼üKbÁ¬½Ó£¨ÇÐ»»Ä£Ê½¹¦ÄÜ£©£¬P2.2ºÍÍâ²¿°´¼üKaÁ¬½Ó£¨µÍÒô·¢Éù¹¦ÄÜ£©£¬P2.4ºÍK2ÏàÁ¬£¬P2.5ºÍK3ÏàÁ¬
+    P2SEL &=~(BIT0+BIT2+BIT4+BIT5);//P2.0å’Œå¤–éƒ¨æŒ‰é”®Kbè¿žæŽ¥ï¼ˆåˆ‡æ¢æ¨¡å¼åŠŸèƒ½ï¼‰ï¼ŒP2.2å’Œå¤–éƒ¨æŒ‰é”®Kaè¿žæŽ¥ï¼ˆä½ŽéŸ³å‘å£°åŠŸèƒ½ï¼‰ï¼ŒP2.4å’ŒK2ç›¸è¿žï¼ŒP2.5å’ŒK3ç›¸è¿ž
     P2SEL2 &=~(BIT0+BIT2+BIT4+BIT5);
     P2OUT |=(BIT0+BIT2+BIT4+BIT5);
     P2REN |=(BIT0+BIT2+BIT4+BIT5);
@@ -75,15 +75,15 @@ int main(void)
     P2IES |=(BIT0+BIT2+BIT4+BIT5);
     P2IFG &=~(BIT0+BIT2+BIT4+BIT5);
     P2IE |=(BIT0+BIT2+BIT4+BIT5);
-    _EINT();    //×ÜÖÐ¶ÏÔÊÐí
-    //¿ØÖÆLEDµÆ¶Ë¿ÚÉèÖÃ£¨P2.3-L4£©
+    _EINT();    //æ€»ä¸­æ–­å…è®¸
+    //æŽ§åˆ¶LEDç¯ç«¯å£è®¾ç½®ï¼ˆP2.3-L4ï¼‰
     P2SEL &=~BIT3;
     P2SEL2 &=~BIT3;
     P2OUT |=BIT3;
     P2DIR |=BIT3;
-    //À¶ÑÀÍ¨ÐÅ
-    UARTA0_init( );                 //³õÊ¼»¯´®¿Ú
-    //½øÈëÊ±ÉèÖÃ³õÊ¼ÃÜÂë
+    //è“ç‰™é€šä¿¡
+    UARTA0_init( );                 //åˆå§‹åŒ–ä¸²å£
+    //è¿›å…¥æ—¶è®¾ç½®åˆå§‹å¯†ç 
     j=0;
     TxtOut(welcome);
     TxtIn(buffer,8);
@@ -99,37 +99,37 @@ int main(void)
        }while(CheckPoint!=1);
         TxtOut(ok);
     }
-    //³õÊ¼ÉèÖÃ²¿·Öµ½´Ë½áÊø
+    //åˆå§‹è®¾ç½®éƒ¨åˆ†åˆ°æ­¤ç»“æŸ
     while(1)
     {
-        //¸èÇú²¥·ÅÄ£Ê½
-        if(flag == 1)   //²¥·Å¡¶Á½Ö»ÀÏ»¢¡·
+        //æ­Œæ›²æ’­æ”¾æ¨¡å¼
+        if(flag == 1)   //æ’­æ”¾ã€Šä¸¤åªè€è™Žã€‹
         {
           TwoTigers_show();
           TxtOut(TwoTigers);
           TwoTigers_play();
           flag=0;
         }
-        else if (flag == 2)//²¥·Å¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·
+        else if (flag == 2)//æ’­æ”¾ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹
         {
           LittleStars_show();
           TxtOut(LittleStars);
           LittleStars_play();
           flag=0;
         }
-        else if (flag == 3)//²¥·Å¡¶ÉÁÁÁµÄÈÕ×Ó¡·
+        else if (flag == 3)//æ’­æ”¾ã€Šé—ªäº®çš„æ—¥å­ã€‹
         {
           ShiningDays_show();
           TxtOut(ShiningDays);
           ShiningDays_play();
           flag=0;
         }
-        else if (flag == 4)//À¶ÑÀ¿ØÖÆ²¥·Å
+        else if (flag == 4)//è“ç‰™æŽ§åˆ¶æ’­æ”¾
         {
           TxtOut(Choices);
           TxtIn(buffer,1);
           CheckPoint = CodeCheck(buffer,one,1);
-          if (CheckPoint==1){    //À¶ÑÀ¿ØÖÆ²¥·Å¡¶Á½Ö»ÀÏ»¢¡·
+          if (CheckPoint==1){    //è“ç‰™æŽ§åˆ¶æ’­æ”¾ã€Šä¸¤åªè€è™Žã€‹
               TwoTigers_show();
               TxtOut(TwoTigers);
               TwoTigers_play();
@@ -137,7 +137,7 @@ int main(void)
           }
           else if (CheckPoint==0){
               CheckPoint = CodeCheck(buffer,two,1);
-              if(CheckPoint==1){     //À¶ÑÀ¿ØÖÆ²¥·Å¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·
+              if(CheckPoint==1){     //è“ç‰™æŽ§åˆ¶æ’­æ”¾ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹
                   LittleStars_show();
                   TxtOut(LittleStars);
                   LittleStars_play();
@@ -145,19 +145,19 @@ int main(void)
               }
               else if(CheckPoint==0){
                   CheckPoint = CodeCheck(buffer,three,1);
-                  if(CheckPoint==1){     //À¶ÑÀ¿ØÖÆ²¥·Å¡¶ÉÁÁÁµÄÈÕ×Ó¡·
+                  if(CheckPoint==1){     //è“ç‰™æŽ§åˆ¶æ’­æ”¾ã€Šé—ªäº®çš„æ—¥å­ã€‹
                       ShiningDays_show();
                       TxtOut(ShiningDays);
                       ShiningDays_play();
                       flag=0;
                   }
-                  else if(CheckPoint==0){   //ÊäÈëÓÐÎó
+                  else if(CheckPoint==0){   //è¾“å…¥æœ‰è¯¯
                       TxtOut(nosongs);
                   }
               }
           }
         }
-        //°´¼üµ¯×àÄ£Ê½
+        //æŒ‰é”®å¼¹å¥æ¨¡å¼
         else if(key==1)
            {
                TA1CCR0=(int)(((double)32768/(double)262)-1);
@@ -214,7 +214,7 @@ int main(void)
                delay(0xff);
                key = 0;
            }
-           else if(key==12)
+           else if(key==12)  
            {
                TA1CCR0=(int)(((double)32768/(double)587)-1);
                TA1CCR1=(int)(0.1*TA1CCR0);
@@ -312,81 +312,81 @@ int main(void)
 
 #pragma  vector=PORT1_VECTOR
 #pragma  vector=PORT2_VECTOR
-__interrupt  void port_ISR( ) //ÖÐ¶Ï×Ó³ÌÐò
+__interrupt  void port_ISR( ) //ä¸­æ–­å­ç¨‹åº
 {
-    if((P2IFG&BIT0)!=0)     // ÅÐ¶ÏÊÇP2.0ÉÏµÄÖÐ¶Ï£¨KaÊÇ·ñ°´ÏÂ£©
+    if((P2IFG&BIT0)!=0)     // åˆ¤æ–­æ˜¯P2.0ä¸Šçš„ä¸­æ–­ï¼ˆKaæ˜¯å¦æŒ‰ä¸‹ï¼‰
  {
      convert = convert+1;
      P2IFG &=~BIT0;
  }
-   if (convert%2==1){a=1;}   // convertÊÇÆæÊý
-   else if(convert%2==0){a=2;}//convertÊÇÅ¼Êý
- if(a==1)     //¸èÇú²¥·ÅÄ£Ê½
+   if (convert%2==1){a=1;}   // convertæ˜¯å¥‡æ•°
+   else if(convert%2==0){a=2;}//convertæ˜¯å¶æ•°
+ if(a==1)     //æ­Œæ›²æ’­æ”¾æ¨¡å¼
    {
-     if ( (P1IFG&BIT0)!=0 )  //ÅÐ¶ÏÊÇP1.0ÉÏµÄÖÐ¶Ï
+     if ( (P1IFG&BIT0)!=0 )  //åˆ¤æ–­æ˜¯P1.0ä¸Šçš„ä¸­æ–­
     {
-        flag = 1;           //¶ÔÓ¦²¥·Å¡¶Á½Ö»ÀÏ»¢¡·
+        flag = 1;           //å¯¹åº”æ’­æ”¾ã€Šä¸¤åªè€è™Žã€‹
         P1IFG &=~BIT0;
     }
-    else if((P2IFG&BIT4)!=0)//ÅÐ¶ÏÊÇP2.6ÉÏµÄÖÐ¶Ï
+    else if((P2IFG&BIT4)!=0)//åˆ¤æ–­æ˜¯P2.6ä¸Šçš„ä¸­æ–­
     {
-        flag = 2;           //¶ÔÓ¦²¥·Å¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·
+        flag = 2;           //å¯¹åº”æ’­æ”¾ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹
         P2IFG &=~BIT4;
     }
-    else if((P2IFG&BIT5)!=0)//ÅÐ¶ÏÊÇP2.5ÉÏµÄÖÐ¶Ï
+    else if((P2IFG&BIT5)!=0)//åˆ¤æ–­æ˜¯P2.5ä¸Šçš„ä¸­æ–­
     {
-        flag = 3;           //¶ÔÓ¦²¥·Å¡¶ÉÁÁÁµÄÈÕ×Ó¡·
+        flag = 3;           //å¯¹åº”æ’­æ”¾ã€Šé—ªäº®çš„æ—¥å­ã€‹
         P2IFG &=~BIT5;
     }
-    else if ( (P1IFG&BIT3)!=0 )  //ÅÐ¶ÏÊÇP1.3ÉÏµÄÖÐ¶Ï
+    else if ( (P1IFG&BIT3)!=0 )  //åˆ¤æ–­æ˜¯P1.3ä¸Šçš„ä¸­æ–­
     {
-         flag = 4;           //À¶ÑÀ¿ØÖÆ²¥·ÅÄ£Ê½
+         flag = 4;           //è“ç‰™æŽ§åˆ¶æ’­æ”¾æ¨¡å¼
          P1IFG &=~BIT3;
     }
    }
- if(a==2)      //°´¼üµ¯×àÄ£Ê½
+ if(a==2)      //æŒ‰é”®å¼¹å¥æ¨¡å¼
  {
-     if ((P1IFG&BIT0)!=0)  //ÅÐ¶ÏÊÇP1.0ÉÏµÄÖÐ¶Ï
+     if ((P1IFG&BIT0)!=0)  //åˆ¤æ–­æ˜¯P1.0ä¸Šçš„ä¸­æ–­
      {
          key = key+1;
          P1IFG &=~BIT0;
      }
-     else if((P2IFG&BIT4)!=0)//ÅÐ¶ÏÊÇP1.1ÉÏµÄÖÐ¶Ï
+     else if((P2IFG&BIT4)!=0)//åˆ¤æ–­æ˜¯P1.1ä¸Šçš„ä¸­æ–­
      {
          key = key+2;
          P2IFG &=~BIT4;
      }
-     else if((P2IFG&BIT5)!=0)//ÅÐ¶ÏÊÇP1.2ÉÏµÄÖÐ¶Ï
+     else if((P2IFG&BIT5)!=0)//åˆ¤æ–­æ˜¯P1.2ä¸Šçš„ä¸­æ–­
      {
          key = key+3;
          P2IFG &=~BIT5;
      }
-     else if((P1IFG&BIT3)!=0)//ÅÐ¶ÏÊÇP1.3ÉÏµÄÖÐ¶Ï
+     else if((P1IFG&BIT3)!=0)//åˆ¤æ–­æ˜¯P1.3ä¸Šçš„ä¸­æ–­
      {
          key = key+4;
          P1IFG &=~BIT3;
      }
-     else if((P1IFG&BIT4)!=0)//ÅÐ¶ÏÊÇP1.4ÉÏµÄÖÐ¶Ï
+     else if((P1IFG&BIT4)!=0)//åˆ¤æ–­æ˜¯P1.4ä¸Šçš„ä¸­æ–­
      {
          key = key+5;
          P1IFG &=~BIT4;
      }
-     else if((P1IFG&BIT5)!=0)//ÅÐ¶ÏÊÇP1.5ÉÏµÄÖÐ¶Ï
+     else if((P1IFG&BIT5)!=0)//åˆ¤æ–­æ˜¯P1.5ä¸Šçš„ä¸­æ–­
      {
          key = key+6;
          P1IFG &=~BIT5;
      }
-     else if((P1IFG&BIT6)!=0)//ÅÐ¶ÏÊÇP1.6ÉÏµÄÖÐ¶Ï
+     else if((P1IFG&BIT6)!=0)//åˆ¤æ–­æ˜¯P1.6ä¸Šçš„ä¸­æ–­
      {
          key = key+7;
          P1IFG &=~BIT6;
      }
-     else if((P1IFG&BIT7)!=0)//ÅÐ¶ÏÊÇP1.7ÉÏµÄÖÐ¶Ï
+     else if((P1IFG&BIT7)!=0)//åˆ¤æ–­æ˜¯P1.7ä¸Šçš„ä¸­æ–­
      {
          key = 10;
          P1IFG &=~BIT7;
      }
-     else if((P2IFG&BIT2)!=0)//ÅÐ¶ÏÊÇP2.2ÉÏµÄÖÐ¶Ï
+     else if((P2IFG&BIT2)!=0)//åˆ¤æ–­æ˜¯P2.2ä¸Šçš„ä¸­æ–­
      {
          key = 20;
          P2IFG &=~BIT2;
@@ -394,70 +394,70 @@ __interrupt  void port_ISR( ) //ÖÐ¶Ï×Ó³ÌÐò
  }
 
 }
-//ÑÓÊ±º¯Êý
+//å»¶æ—¶å‡½æ•°
 void delay(unsigned int i)
-{   unsigned int j;             //¶¨Òå¾Ö²¿±äÁ¿
+{   unsigned int j;             //å®šä¹‰å±€éƒ¨å˜é‡
     for (j=0; j<i; j++);
 }
-//¡¶Á½Ö»ÀÏ»¢¡·²¥·Åº¯Êý
+//ã€Šä¸¤åªè€è™Žã€‹æ’­æ”¾å‡½æ•°
 void TwoTigers_play()
 {
 
-    int i=0;   //¡°Á½Ö»ÀÏ»¢¡±
+    int i=0;   //â€œä¸¤åªè€è™Žâ€
       for(i=0;i<4;i++){
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers1[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0x6fff);
 
       }
-      if(i==4)  //Á½¸ö¡°Á½Ö»ÀÏ»¢¡±Ö®¼äµÄÍ£¶Ù
+      if(i==4)  //ä¸¤ä¸ªâ€œä¸¤åªè€è™Žâ€ä¹‹é—´çš„åœé¡¿
       {
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers1[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0x50);
       }
-      for(i=5;i<17;i++){    //¡°ÅÜµÃ¿ì£¬ÅÜµÃ¿ì¡±
+      for(i=5;i<17;i++){    //â€œè·‘å¾—å¿«ï¼Œè·‘å¾—å¿«â€
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers1[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0x6fff);
       }
-      if(i==17){  //¡°ÅÜµÃ¿ì¡±ºÍ¡°Ò»Ö»Ã»ÓÐ¶ú¶ä¡±ÖÐ¼äÍ£¶Ù
+      if(i==17){  //â€œè·‘å¾—å¿«â€å’Œâ€œä¸€åªæ²¡æœ‰è€³æœµâ€ä¸­é—´åœé¡¿
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers1[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0x50);
       }
-      for(i=0;i<16;i++){//¡°Ò»Ö»Ã»ÓÐ¶ú¶ä£¬Ò»Ö»Ã»ÓÐÎ²°Í¡±
+      for(i=0;i<16;i++){//â€œä¸€åªæ²¡æœ‰è€³æœµï¼Œä¸€åªæ²¡æœ‰å°¾å·´â€
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers2[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0.5*0x6fff);
       }
-      if(i==16){//¡°Ò»Ö»Ã»ÓÐÎ²°Í¡±ºÍ¡°ÕæÆæ¹Ö¡±Ö®¼äÍ£¶Ù
+      if(i==16){//â€œä¸€åªæ²¡æœ‰å°¾å·´â€å’Œâ€œçœŸå¥‡æ€ªâ€ä¹‹é—´åœé¡¿
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers2[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0x50);
       }
-      for(i=17;i<25;i++){//¡°ÕæÆæ¹Ö¡±
+      for(i=17;i<25;i++){//â€œçœŸå¥‡æ€ªâ€
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers2[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0.5*0x6fff);
       }
-      if(i==25){//Á½¸ö¡°ÕæÆæ¹Ö¡±Ö®¼äÍ£¶Ù
+      if(i==25){//ä¸¤ä¸ªâ€œçœŸå¥‡æ€ªâ€ä¹‹é—´åœé¡¿
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers2[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0x50);
       }
-      for(i=26;i<34;i++){//¡°ÕæÆæ¹Ö¡±
+      for(i=26;i<34;i++){//â€œçœŸå¥‡æ€ªâ€
           TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers2[i]])-1);
           TA1CCR1=(int)(0.1*TA1CCR0);
           delay(0.5*0x6fff);
       }
-      if(i==34){//¡°ÕæÆæ¹Ö¡±ºÍ¡°Á½Ö»ÀÏ»¢¡±Ö®¼äÍ£¶Ù
+      if(i==34){//â€œçœŸå¥‡æ€ªâ€å’Œâ€œä¸¤åªè€è™Žâ€ä¹‹é—´åœé¡¿
          TA1CCR0=(int)(((double)32768/(double)TwoTigers_rym[TwoTigers2[i]])-1);
          TA1CCR1=(int)(0.1*TA1CCR0);
          delay(0x50);
       }
 }
-//¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·²¥·Åº¯Êý
+//ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹æ’­æ”¾å‡½æ•°
 void LittleStars_play()
 {
 
@@ -602,7 +602,7 @@ void LittleStars_play()
        delay(0x6fff);
   }
 }
-//¡¶ÉÁÁÁµÄÈÕ×Ó¡·²¥·Åº¯Êý
+//ã€Šé—ªäº®çš„æ—¥å­ã€‹æ’­æ”¾å‡½æ•°
 void ShiningDays_play()
 
 {
@@ -650,7 +650,7 @@ void ShiningDays_play()
         delay(0x6fff);
     }
 }
-//²¥·Å¡¶Á½Ö»ÀÏ»¢¡·Ê±¾§Ìå¹ÜL4ÁÁÒ»´Î
+//æ’­æ”¾ã€Šä¸¤åªè€è™Žã€‹æ—¶æ™¶ä½“ç®¡L4äº®ä¸€æ¬¡
 void TwoTigers_show()
 {
     P2OUT &=~BIT3;
@@ -658,62 +658,62 @@ void TwoTigers_show()
     P2OUT |=BIT3;
     delay(0xf000*2);
 }
-//²¥·Å¡¶Ò»ÉÁÒ»ÉÁÁÁ¾§¾§¡·Ê±¾§Ìå¹ÜL4ÁÁÁ½´Î
+//æ’­æ”¾ã€Šä¸€é—ªä¸€é—ªäº®æ™¶æ™¶ã€‹æ—¶æ™¶ä½“ç®¡L4äº®ä¸¤æ¬¡
 void LittleStars_show()
 {
     unsigned int i;
     for (i=0; i<4; i++)
   {
-    P2OUT ^=BIT3;     //¶ÔÒý½ÅÊä³öÇó·´
+    P2OUT ^=BIT3;     //å¯¹å¼•è„šè¾“å‡ºæ±‚å
     delay(0xffff);
   };
 }
-//²¥·Å¡¶ÉÁÁÁµÄÈÕ×Ó¡·Ê±¾§Ìå¹ÜL4ÁÁÈý´Î
+//æ’­æ”¾ã€Šé—ªäº®çš„æ—¥å­ã€‹æ—¶æ™¶ä½“ç®¡L4äº®ä¸‰æ¬¡
 void ShiningDays_show()
 {
     unsigned int i;
     for (i=0; i<6; i++)
   {
-    P2OUT ^=BIT3;     //¶ÔÒý½ÅÊä³öÇó·´
+    P2OUT ^=BIT3;     //å¯¹å¼•è„šè¾“å‡ºæ±‚å
     delay(0xffff);
   };
 }
 void  UARTA0_init( )
-{   UCA0CTL1|= UCSWRST;      //ÖÃÈí¼þ¸´Î»Î»swrstÎª1
-    P1SEL |= BIT1+BIT2;             //ÖÃP1.1¡¢P1.2Îª´®ÐÐ½Ó¿ÚÊÕ¡¢·¢Òý½Å¹¦ÄÜ
-    P1SEL2 |= BIT1+BIT2;        //Êý¾Ý¸ñÊ½Ñ¡ÓÃÉÏµç¸´Î»ÉèÖÃ£ºÎÞÐ£Ñé£¬8Î»Êý¾Ý£¬1¸öÍ£Ö¹Î»£¬Òì²½´®ÐÐÍ¨ÐÅ
-    UCA0CTL1|=UCSSEL0+UCRXEIE; //²¨ÌØÂÊÊ±ÖÓÑ¡ÔñÉÏµç¸´Î»Ê±µÄACLK£¬32.768KHz£¬¶Ô´í¾ùÊÕ
-    UCA0BR0 = 3;              //²¨ÌØÂÊ9600
+{   UCA0CTL1|= UCSWRST;      //ç½®è½¯ä»¶å¤ä½ä½swrstä¸º1
+    P1SEL |= BIT1+BIT2;             //ç½®P1.1ã€P1.2ä¸ºä¸²è¡ŒæŽ¥å£æ”¶ã€å‘å¼•è„šåŠŸèƒ½
+    P1SEL2 |= BIT1+BIT2;        //æ•°æ®æ ¼å¼é€‰ç”¨ä¸Šç”µå¤ä½è®¾ç½®ï¼šæ— æ ¡éªŒï¼Œ8ä½æ•°æ®ï¼Œ1ä¸ªåœæ­¢ä½ï¼Œå¼‚æ­¥ä¸²è¡Œé€šä¿¡
+    UCA0CTL1|=UCSSEL0+UCRXEIE; //æ³¢ç‰¹çŽ‡æ—¶é’Ÿé€‰æ‹©ä¸Šç”µå¤ä½æ—¶çš„ACLKï¼Œ32.768KHzï¼Œå¯¹é”™å‡æ”¶
+    UCA0BR0 = 3;              //æ³¢ç‰¹çŽ‡9600
     UCA0BR1 = 0;
     UCA0MCTL=UCBRF_0+UCBRS_3;
-    UCA0CTL1 &=~UCSWRST;        //ÖÃÈí¼þ¸´Î»Î»swrstÎª0£¬´®¿ÚÉèÖÃÍê±Ï
+    UCA0CTL1 &=~UCSWRST;        //ç½®è½¯ä»¶å¤ä½ä½swrstä¸º0ï¼Œä¸²å£è®¾ç½®å®Œæ¯•
 }
 void TxtOut(char string[]){
     int j = 0;
-    while(string[j]!='\0')              //Êä³öÌáÊ¾ÐÅÏ¢
-    {   while((IFG2&UCA0TXIFG)==0);     //¼ì²â·¢ËÍ»º³åÊÇ·ñ¿Õ
-             UCA0TXBUF=string[j];       //È¡Ò»¸öÊý¾Ý·¢ËÍ
+    while(string[j]!='\0')              //è¾“å‡ºæç¤ºä¿¡æ¯
+    {   while((IFG2&UCA0TXIFG)==0);     //æ£€æµ‹å‘é€ç¼“å†²æ˜¯å¦ç©º
+             UCA0TXBUF=string[j];       //å–ä¸€ä¸ªæ•°æ®å‘é€
              j++;
      };
 }
 void TxtIn(char string[], int num ){
     int j = 0;
-    while(j < num)           //½ÓÊÕ×Ö·û´®
-    {while((IFG2&UCA0RXIFG)==0);     //¼ì²â½ÓÊÕ»º³åÆ÷ÊÇ·ñÂú
-          string[j] = UCA0RXBUF;       //½ÓÊÕÒ»¸öÊý¾Ý²¢±£´æ
+    while(j < num)           //æŽ¥æ”¶å­—ç¬¦ä¸²
+    {while((IFG2&UCA0RXIFG)==0);     //æ£€æµ‹æŽ¥æ”¶ç¼“å†²å™¨æ˜¯å¦æ»¡
+          string[j] = UCA0RXBUF;       //æŽ¥æ”¶ä¸€ä¸ªæ•°æ®å¹¶ä¿å­˜
           j++;
     };
 }
 int  CodeCheck(char buffer[],char Code[],int num){
     int rec = 0;
     int j = 0;
-       while(j < num)//±È½ÏÊäÈëµÄ×Ö·û´®bufferºÍÉè¶¨µÄÃÜÂë×Ö·û´®codeÊÇ·ñÏàµÈ
+       while(j < num)//æ¯”è¾ƒè¾“å…¥çš„å­—ç¬¦ä¸²bufferå’Œè®¾å®šçš„å¯†ç å­—ç¬¦ä¸²codeæ˜¯å¦ç›¸ç­‰
        {
            if(buffer[j] == Code[j]){rec++;}
            j++;
        };
-     if(rec == num) //ÏàµÈ
+     if(rec == num) //ç›¸ç­‰
          return 1;
-     else          //²»µÈ
+     else          //ä¸ç­‰
          return 0;
 }
