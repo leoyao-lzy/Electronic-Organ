@@ -16,7 +16,7 @@ Code Composer Studio is an integrated development environment to develop applica
 
 Synthesizing the theory and experimental content of "Fundamentals of computer hardware technology", through the hardware, software design and debugging of a microcontroller application system, the development ability of computer software and hardware is improved.
 
-- #### ==Contents==
+- #### ```Contents```
 
 Design and implement a simple electronic keyboard, the functional requirements are as follows.
 ##### Basic Functions
@@ -32,7 +32,7 @@ The function of the phone Bluetooth controlling.
 
 It is necessary to investigate, design and program the project outside the classroom, including the hardware system circuit design of the project, the overall design of the software (including the module division of the software, the overall flow chart of the software and the flow chart of each module), the design of human-computer interaction operation, etc.
 
-- #### ==Reference scheme(significant!)==
+- #### ```Reference scheme(significant!)```
 
 ##### Implement the control of each tone
 1. Learn the timer TA of the msp430g2553 and master the method of using the TA to output the PWM waveform with adjustable frequency and duty cycle on the pin.
@@ -61,7 +61,7 @@ The switching function can be done with another off-board independent key, and e
 
 1. In the "Music-Play" folder, there are C files that play the songs "Little Stars" and "Shinning Days" separately.
 
-2. ==I'm just getting started with C programming, it's my first time working on a project on my own, and my level of programming is still improving, so the implementation code for this project doesn't look concise enough, and there's plenty of room for debugging and modifying. If you have any questions or suggestions, you are more than welcome to comment or contact me directly.==
+2. ```I'm just getting started with C programming, it's my first time working on a project on my own, and my level of programming is still improving, so the implementation code for this project doesn't look concise enough, and there's plenty of room for debugging and modifying. If you have any questions or suggestions, you are more than welcome to comment or contact me directly.```
 
 3. Will be updated continuously... 
 
