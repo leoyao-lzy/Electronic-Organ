@@ -45,7 +45,7 @@ In the Flash ROM, in the form of a table to store a song or music score, includi
 1. Add the control of the key, when the single key in K1 ~ K7 is pressed, the buzzer emits the corresponding tone of the call name 1, 2, 3, 4, 5, 6, 7.
 2. When K8 is pressed, and then any of the keys in K1~K7 are pressed, the buzzer emits the corresponding tone of the treble name 1, 2, 3, 4, 5, 6, 7, such as pressing K8 and then pressing the K1 key to issue a treble 1, at which time K8 is used as a treble control key.
 3. Add an off-board independent button K. When the K key is pressed, and then any of the keys in K1 to K7 are pressed, the buzzer emits the corresponding tones of the bass called 1, 2, 3, 4, 5, 6, and 7, respectively, and K is used as the bass control key.
-##### Adds a toggle control button for playback and playing functions
+##### Add a toggle control button for playback and playing functions
 
 The switching function can be done with another off-board independent key, and each time this off-board key is pressed, it switches from one mode to another.
 ##### Bluetooth functions
