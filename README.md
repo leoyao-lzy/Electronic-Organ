@@ -65,7 +65,7 @@ The switching function can be done with another off-board independent key, and e
 
 3. Will be updated continuously... 
 
-   ​                                                                                                 Edition1. December 29, 2021 at Ye Jiaxuan Library, Tsinghua University.
+   ​                                                                                                                Edition1. December 29, 2021 at Ye Jiaxuan Library, Tsinghua University.
 
 
 
